@@ -14,22 +14,22 @@ int get_random()
 class Account {
 public:
     Account() = default;
-    Account(std::string& name, char type, int balance): _name(name),
-    _type(type), _balance(balance), _account_no(get_random()) { }
+    Account(std::string& name, char type, int balance): name_(name),
+    type_(type), balance_(balance), account_no_(get_random()) { }
     void initialize();
     void modify();
     void deposit(double amount);
     void withdraw(double amount);
-    int get_number() const { return _account_no; } // get account number
-    int get_balance() const { return _balance; } // get account balance
+    int get_number() const { return account_no_; } // get account number
+    int get_balance() const { return balance_; } // get account balance
     std::string get_type() const; // get account type
-    std::string get_holder() const { return _name; } // get name of account holder
+    std::string get_holder() const { return name_; } // get name of account holder
     
 private:
-    int _account_no;
-    char _type;
-    std::string _name;
-    double _balance;
+    int account_no_;
+    char type_;
+    std::string name_;
+    double balance_;
 };
 
 // nonmember functions
@@ -47,13 +47,13 @@ void Account::initialize()
 {
     std::cout << "Enter name of account holder:" << std::endl;
     std::cin.ignore(256, '\n');
-    std::getline(std::cin, _name);
+    std::getline(std::cin, name_);
     std::cout << "[C]urrent account" << "\n[S]avings account" << "\nEnter account type [C/S]:" << std::endl;
-    std::cin >> _type;
-    _type = toupper(_type);
+    std::cin >> type_;
+    type_ = toupper(type_);
     std::cout << "Enter initial balance (>=500 for saving and >=1000 for current):" << std::endl;
-    std::cin >> _balance;
-    _account_no = get_random();
+    std::cin >> balance_;
+    account_no_ = get_random();
 }
 
 void Account::modify()
@@ -70,17 +70,17 @@ void Account::modify()
         case 'n':
             std::cout << "New account holder name: " << std::endl;
             std::cin.ignore(256, '\n');
-            std::getline(std::cin, _name);
+            std::getline(std::cin, name_);
             break;
         case 't':
             std::cout << "New account type: " << std::endl;
             std::cin.ignore(256, '\n');
-            std::cin >> _type;
+            std::cin >> type_;
             break;
         case 'b':
             std::cout << "New account balance: " << std::endl;
             std::cin.ignore(256, '\n');
-            std::cin >> _balance;
+            std::cin >> balance_;
             break;
         default:
             modify();
@@ -90,17 +90,17 @@ void Account::modify()
 
 void Account::deposit(double amount)
 {
-    _balance = _balance + amount;
+    balance_ = balance_ + amount;
 }
 
 void Account::withdraw(double amount)
 {
-    _balance = _balance - amount;
+    balance_ = balance_ - amount;
 }
 
 std::string Account::get_type() const
 {
-    if (_type == 'C')
+    if (type_ == 'C')
         return "Current";
     else 
         return "Savings";
