@@ -14,8 +14,8 @@ int get_random()
 class Account {
 public:
     Account() = default;
-    Account(std::string& name, char type, int balance): name_(name),
-    type_(type), balance_(balance), account_no_(get_random()) { }
+    Account(std::string& name, char type, int balance): account_no_(get_random()),
+    type_(type), name_(name), balance_(balance) { }
     void initialize();
     void modify();
     void deposit(double amount);
