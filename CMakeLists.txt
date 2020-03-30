@@ -1,9 +1,5 @@
 cmake_minimum_required(VERSION 3.5.0)
-
 project(banking_application)
-
 include_directories(include)
-
 file(GLOB SOURCES "src/*.cpp")
-
 add_executable(banking_application src/main.cpp)
