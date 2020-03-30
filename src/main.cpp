@@ -7,6 +7,8 @@
 // *****
 void wait(); // wait for user after output
 void create_account(std::vector<Account>&);
+void deposit(Account&);
+void withdraw(Account&);
 Account &prompt_account(std::vector<Account>&);
 int get_choice(std::string&, std::vector<std::string>&);
 
@@ -17,6 +19,7 @@ int main()
     std::vector<std::string> choices = {"CREATE ACCOUNT", "MODIFY ACCOUNT", "SHOW ACCOUNT", "DEPOSIT", "WITHDRAW", "EXIT"};
     int choice = 0;
     do {
+        // list choices and ask for choice
         if (!prompt.empty() ) {
             std::cout << prompt << std::endl;
         }
@@ -26,33 +29,18 @@ int main()
             ++i;
         }
         std::cin >> choice;
-        if (choice < 6) {
-            if (choice == 1) { // create account
-                create_account(accounts);
-                wait(); //wait for user
-                continue;
-            }
-            else { // subsequent actions require a reference to an account
-                Account &account = prompt_account(accounts);
-                if (choice == 2) // modify account
-                    account.modify();
-                else if (choice == 3) // show account
-                    print(std::cout, account);
-                else if (choice == 4) { // deposit
-                    double amount = 0;
-                    std::cout << "Amount to deposit:" << std::endl;
-                    std::cin >> amount;
-                    account.deposit(amount);
-                }
-                else if (choice == 5) { // withdraw
-                    double amount = 0;
-                    std::cout << "Amount to withdraw:" << std::endl;
-                    std::cin >> amount;
-                    account.withdraw(amount);
-                }
-                wait(); // wait for user
-            }
-        }
+        // process choice
+        if (choice == 1) // create account
+            create_account(accounts);
+        else if (choice == 2) // modify account
+            prompt_account(accounts).modify();
+        else if (choice == 3) // show account
+            print(std::cout, prompt_account(accounts) );
+        else if (choice == 4) // deposit
+            deposit(prompt_account(accounts) );
+        else if (choice == 5) // withdraw
+            withdraw(prompt_account(accounts) );
+        wait(); // wait for user
     } while (choice < 6);
     return 0;
 }
@@ -75,6 +63,22 @@ void create_account(std::vector<Account> &accounts)
     std::cout << "Account number: " << acc.get_number() << std::endl;
 }
 
+void deposit(Account &account)
+{
+    double amount = 0;
+    std::cout << "Amount to deposit:" << std::endl;
+    std::cin >> amount;
+    account.deposit(amount);
+}
+
+void withdraw(Account &account)
+{
+    double amount = 0;
+    std::cout << "Amount to withdraw:" << std::endl;
+    std::cin >> amount;
+    account.withdraw(amount);
+}
+
 Account &prompt_account(std::vector<Account> &accounts)
 {
     int account_num;
@@ -93,3 +97,24 @@ Account &prompt_account(std::vector<Account> &accounts)
     std::cerr << "No account with matching number found" << std::endl;
     throw std::invalid_argument("Invalid account number");
 }
+
+/*
+Account &prompt_account(std::vector<Account> &accounts)
+{
+
+}
+
+void do_prompt_account(const std::vector<Account> &accounts))
+{
+    int account_num;
+    std::cout << "Account number:" << std::endl;
+    std::cin >> account_num;
+    // search for an account in accounts that has a matching account number
+    for (auto &acc : accounts) {
+        if (account_num == acc.get_number())
+            return acc;
+    }
+    std::cerr << "No account with matching number found" << std::endl;
+    throw std::invalid_argument("Invalid account number");
+}
+*/
