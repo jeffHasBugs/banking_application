@@ -58,9 +58,9 @@ void wait()
 void create_account(std::vector<Account> &accounts)
 {
     Account acc;
-    acc.initialize();
+    int account_num = acc.initialize();
+    std::cout << "Account number: " << account_num << std::endl;
     accounts.push_back(acc);
-    std::cout << "Account number: " << acc.get_number() << std::endl;
 }
 
 void deposit(Account &account)
@@ -84,37 +84,12 @@ Account &prompt_account(std::vector<Account> &accounts)
     int account_num;
     std::cout << "Account number:" << std::endl;
     std::cin >> account_num;
-    /*
-    search for an account in accounts that has a matching account number
-    for account in accounts:
-        if account.number matches account_number
-            return account
-    */
-    for (auto &acc : accounts) {
-        if (account_num == acc.get_number())
-            return acc;
+    try {
+        Account &acc = search(account_num, accounts);
+        return acc;
     }
-    std::cerr << "No account with matching number found" << std::endl;
-    throw std::invalid_argument("Invalid account number");
-}
-
-/*
-Account &prompt_account(std::vector<Account> &accounts)
-{
-
-}
-
-void do_prompt_account(const std::vector<Account> &accounts))
-{
-    int account_num;
-    std::cout << "Account number:" << std::endl;
-    std::cin >> account_num;
-    // search for an account in accounts that has a matching account number
-    for (auto &acc : accounts) {
-        if (account_num == acc.get_number())
-            return acc;
+    catch (std::invalid_argument &e) {
+        std::cerr << e.what() << std::endl;
+        throw;
     }
-    std::cerr << "No account with matching number found" << std::endl;
-    throw std::invalid_argument("Invalid account number");
 }
-*/
